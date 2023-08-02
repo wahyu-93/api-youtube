@@ -2,56 +2,21 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-3">
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="" class="card-img-top">
-                <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis illum modi non laudantium enim commodi rerum? Odio a nostrum rem.
-                </div>
-
-                <div class="card-footer">
-                    Published 2023
-                </div>
+        @foreach($videoLists->items as $list)
+            <div class="col-md-3">
+                <a href="{{ route('watch', $list->id->videoId) }}" class="text-decoration-none text-secondary">
+                    <div class="card mb-3" style="height: 350px;">
+                        <img src="{{ $list->snippet->thumbnails->medium->url }}" alt="" class="card-img-top" style="height:200px;">
+                        <div class="card-body">
+                           <div class="card-title">{{ \Illuminate\Support\Str::limit($list->snippet->title, $limit = 50, $end = '...') }}</div>
+                        </div>
+    
+                        <div class="card-footer">
+                            Published At {{ date('D, d M Y', strtotime($list->snippet->publishTime)) }}
+                        </div>
+                    </div>
+                </a>
             </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="" class="card-img-top">
-                <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis illum modi non laudantium enim commodi rerum? Odio a nostrum rem.
-                </div>
-
-                <div class="card-footer">
-                    Published 2023
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="" class="card-img-top">
-                <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis illum modi non laudantium enim commodi rerum? Odio a nostrum rem.
-                </div>
-
-                <div class="card-footer">
-                    Published 2023
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card">
-                <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="" class="card-img-top">
-                <div class="card-body">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nobis illum modi non laudantium enim commodi rerum? Odio a nostrum rem.
-                </div>
-
-                <div class="card-footer">
-                    Published 2023
-                </div>
-            </div>
-        </div>
+        @endforeach()
     </div> 
 @endsection
