@@ -10,32 +10,39 @@ class YoutubeController extends Controller
 {
     public function index()
     {
-        if(session()->has('query_search')){
+        if (session()->has('query_search')) {
             $query = session('query_search');
-        }
-        else {
+        } else {
             $query = 'laravel api';
         };
-        $videoLists = $this->_videoLists($query);
-        return view('index',compact('videoLists'));
+        $videoLists = $this->_videoLists($query, 12);
+        return view('index', compact('videoLists'));
     }
 
     public function results(Request $request)
     {
         session(['query_search' => $request->search]);
-        $videoLists = $this->_videoLists($request->search);
+        $videoLists = $this->_videoLists($request->search, 12);
         return view('results', compact('videoLists'));
     }
 
-    public function watch()
+    public function watch($id)
     {
-        return view('watch');
+        $singleVideo = $this->_singleVideo($id);
+
+        if (session()->has('query_search')) {
+            $query = session('query_search');
+        } else {
+            $query = 'laravel api';
+        };
+        $videoLists = $this->_videoLists($query, 5);
+
+        return view('watch', compact('singleVideo', 'videoLists'));
     }
 
-    protected function _videoLists($keywords)
+    protected function _videoLists($keywords, $maxResults)
     {
         $part = "snippet";
-        $maxResults = 12;
         $regionCode = "BD";
         $type = "video";
         $key = config('services.youtube.api_key');
@@ -47,6 +54,20 @@ class YoutubeController extends Controller
         $results = json_decode($response);
 
         File::put(storage_path() . '/app/public/results.json', $response->body());
+        return $results;
+    }
+
+    protected function _singleVideo($id)
+    {
+        $apiKey = config('services.youtube.api_key');
+        $part = "snippet";
+
+        // https://www.googleapis.com/youtube/v3/videos?part=&id=&key=
+        $url = "https://www.googleapis.com/youtube/v3/videos?part=$part&id=$id&key=$apiKey";
+        $response = Http::get($url);
+        $results = json_decode($response);
+
+        File::put(storage_path() . '/app/public/single.json', $response->body());
         return $results;
     }
 }

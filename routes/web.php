@@ -20,5 +20,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [YoutubeController::class, 'index'])->name('index');
 Route::get('/results', [YoutubeController::class, 'results'])->name('results');
-Route::get('/watch', [YoutubeController::class, 'watch'])->name('watch');
-
+Route::get('/watch/{id}', [YoutubeController::class, 'watch'])->name('watch');
